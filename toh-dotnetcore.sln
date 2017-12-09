@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toh-dotnetcore", "toh-dotnetcore\toh-dotnetcore.csproj", "{FE125634-59F5-4381-BEA8-2604DFB40932}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE125634-59F5-4381-BEA8-2604DFB40932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE125634-59F5-4381-BEA8-2604DFB40932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE125634-59F5-4381-BEA8-2604DFB40932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE125634-59F5-4381-BEA8-2604DFB40932}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {327D18BA-ADB0-4944-B9F7-C05965798DCF}
+	EndGlobalSection
+EndGlobal
