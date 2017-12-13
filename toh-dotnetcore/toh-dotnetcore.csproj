@@ -6,6 +6,8 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <AssemblyName>tohdotnetcore</AssemblyName>
     <RootNamespace>tohdotnetcore</RootNamespace>
+    <ApplicationInsightsResourceId>/subscriptions/a07802f5-f8df-47d8-9b88-79ba55cfb396/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/toh-dotnetcore</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/a07802f5-f8df-47d8-9b88-79ba55cfb396/resourcegroups/Default-ApplicationInsights-EastUS/providers/microsoft.insights/components/toh-dotnetcore</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,12 +16,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights" Version="2.5.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.0-beta1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.SnapshotCollector" Version="1.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

@@ -23,9 +23,17 @@ namespace toh_dotnetcore.Controllers
 
         // GET: api/Heroes
         [HttpGet]
-        public IEnumerable<Hero> GetHero()
+        public IEnumerable<Hero> GetHero(string name)
         {
-            return _context.Hero;
+            if (string.IsNullOrEmpty(name))
+            {
+                return _context.Hero;
+            }
+            else
+            {
+                throw new NullReferenceException();
+                return _context.Hero.Where(m => m.Name.Contains(name)).ToList();
+            }
         }
 
         // GET: api/Heroes/5
@@ -37,7 +45,12 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest(ModelState);
             }
 
-            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id);
+            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id + 2);
+
+            if (hero.Name.Contains("Ken"))
+            {
+                return Ok(hero);
+            }
 
             if (hero == null)
             {
@@ -46,6 +59,21 @@ namespace toh_dotnetcore.Controllers
 
             return Ok(hero);
         }
+
+        //// GET: api/Heroes/5
+        //[HttpGet("?name={name}")]
+        //public async Task<IActionResult> SearchHeroes(string name)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var heros = await _context.Hero.Where(m => m.Name == name).ToListAsync();
+
+        //    return Ok(heros);
+        //}
+
 
         // PUT: api/Heroes/5
         [HttpPut("{id}")]
