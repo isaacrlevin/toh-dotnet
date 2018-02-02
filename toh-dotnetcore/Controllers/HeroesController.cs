@@ -31,8 +31,9 @@ namespace toh_dotnetcore.Controllers
             }
             else
             {
-                throw new NullReferenceException();
-                return _context.Hero.Where(m => m.Name.Contains(name)).ToList();
+                var heros = _context.Hero.Where(m => m.Name.Contains(name)).ToList();
+                var thisCouldBeAnError = heros[3];
+                return heros;
             }
         }
 
@@ -45,12 +46,7 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest(ModelState);
             }
 
-            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id + 2);
-
-            if (hero.Name.Contains("Ken"))
-            {
-                return Ok(hero);
-            }
+            var hero = _context.Hero.FirstOrDefault(m => m.Id == id);
 
             if (hero == null)
             {
@@ -59,21 +55,6 @@ namespace toh_dotnetcore.Controllers
 
             return Ok(hero);
         }
-
-        //// GET: api/Heroes/5
-        //[HttpGet("?name={name}")]
-        //public async Task<IActionResult> SearchHeroes(string name)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var heros = await _context.Hero.Where(m => m.Name == name).ToListAsync();
-
-        //    return Ok(heros);
-        //}
-
 
         // PUT: api/Heroes/5
         [HttpPut("{id}")]
