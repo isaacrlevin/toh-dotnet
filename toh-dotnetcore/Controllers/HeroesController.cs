@@ -39,7 +39,7 @@ namespace toh_dotnetcore.Controllers
 
         // GET: api/Heroes/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetHero([FromRoute] int id)
+        public IActionResult GetHero([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
