@@ -32,7 +32,6 @@ namespace toh_dotnetcore.Controllers
             else
             {
                 var heros = _context.Hero.Where(m => m.Name.Contains(name)).ToList();
-                var thisCouldBeAnError = heros[3];
                 return heros;
             }
         }
