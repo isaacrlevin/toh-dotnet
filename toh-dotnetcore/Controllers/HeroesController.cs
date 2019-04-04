@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using tohdotnetcore;
 using tohdotnetcore.Models;
 
@@ -45,8 +46,9 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest(ModelState);
             }
 
-            var hero = _context.Hero.FirstOrDefault(m => m.Id == id);
+            
 
+            var hero = _context.Hero.FirstOrDefault(m => m.Id == id);
             if (hero == null)
             {
                 return NotFound();
