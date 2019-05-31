@@ -55,4 +55,4 @@ stages:
         azureSubscription: 'Personal Azure'
         appType: 'webApp'
         WebAppName: 'toh-dotnetcore'
-        packageForLinux: $(build.artifactstagingdirectory)/**/*.zip'
+        packageForLinux: '$(build.artifactstagingdirectory)/drop/toh-dotnetcore.zip'
