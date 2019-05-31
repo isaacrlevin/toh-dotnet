@@ -1,8 +1,8 @@
-pool:
-  vmImage: 'ubuntu-latest'
-
 trigger:
 - master
+
+pool:
+  vmImage: 'ubuntu-latest'
 
 variables:
   BuildConfiguration: 'Release'
