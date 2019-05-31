@@ -10,7 +10,7 @@ stages:
   displayName: Build Application using .NET CLI
   jobs:
   - job: Build
-    displayName: .NET CLI Build
+    displayName: Build using .NET CLI
     pool:
       vmImage: $(vmImage)
     steps:
@@ -19,29 +19,22 @@ stages:
       inputs:
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
-  - job: Publish
-    displayName: .NET CLI Publish
-    pool:
-      vmImage: $(vmImage)          
-    steps:
+
     - task: DotNetCoreCLI@2
-      displayName: Publish
+      displayName: Publish using .NET CLI
       inputs:
         command: publish
         publishWebProjects: false
         projects: '**/*.csproj'
         arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
         zipAfterPublish: True
-  - job: PublishArtifacts
-    displayName: Publish Build Artifacts
-    pool:
-      vmImage: $(vmImage)          
-    steps:
+
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         artifactName: 'drop'
+
 - stage: Deploy
   displayName: Deploy to Azure
   jobs:
