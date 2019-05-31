@@ -37,19 +37,21 @@ stages:
 - stage: Deploy
   displayName: Deploy to Azure
   jobs:
-  - job: Deploy
-    displayName: Deploy
-    dependsOn: Build
-    jobs:
-    - job: DeployProd
-      displayName: Deploy to Prod
-      pool:
-        vmImage: $(vmImage)
-      steps:
-        - task: AzureRmWebAppDeployment@4
-           inputs:
-             ConnectionType: 'AzureRM'
-             azureSubscription: 'Personal Azure'
-             appType: 'webApp'
-             WebAppName: 'toh-dotnetcore'
-             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+  - job: DeployProd
+    displayName: Deploy to Prod
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Personal Azure'
+        appType: 'webApp'
+        WebAppName: 'toh-dotnetcore'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
