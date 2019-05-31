@@ -20,17 +20,17 @@ stages:
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
-      projects: '**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration)'
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
 
     - task: DotNetCoreCLI@2
       displayName: Publish
       inputs:
-      command: publish
-      publishWebProjects: false
-      projects: '**/*.csproj'
-      arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
-      zipAfterPublish: True
+        command: publish
+        publishWebProjects: false
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+        zipAfterPublish: True
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact'
