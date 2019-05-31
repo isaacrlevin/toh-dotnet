@@ -7,7 +7,7 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build TOH .NET DotNetCoreCLI
+  displayName: Build Application using .NET CLI
   jobs:
   - job: Build
     displayName: Build
