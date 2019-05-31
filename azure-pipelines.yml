@@ -1,11 +1,9 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 variables:
   BuildConfiguration: 'Release'
+  vmImage: 'ubuntu-latest'
 
 stages:
 - stage: Build
@@ -16,7 +14,6 @@ stages:
     pool:
       vmImage: $(vmImage)
     steps:
-
     - task: DotNetCoreCLI@2
       displayName: Build
       inputs:
@@ -36,4 +33,3 @@ stages:
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
-        condition: succeededOrFailed()
