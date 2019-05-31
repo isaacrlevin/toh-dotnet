@@ -55,4 +55,4 @@ stages:
         azureSubscription: 'Personal Azure'
         appType: 'webApp'
         WebAppName: 'toh-dotnetcore'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: $(build.artifactstagingdirectory)/**/*.zip'
