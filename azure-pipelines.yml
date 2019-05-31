@@ -33,3 +33,23 @@ stages:
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
+
+- stage: Deploy
+  displayName: Deploy to Azure
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    dependsOn: Build
+    jobs:
+    - job: DeployProd
+      displayName: Deploy to Prod
+      pool:
+        vmImage: $(vmImage)
+      steps:
+        - task: AzureRmWebAppDeployment@4
+           inputs:
+             ConnectionType: 'AzureRM'
+             azureSubscription: 'Personal Azure'
+             appType: 'webApp'
+             WebAppName: 'toh-dotnetcore'
+             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
