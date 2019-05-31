@@ -35,7 +35,7 @@ namespace tohdotnetcore
             }
         }
         public Startup(IConfiguration configuration) => Configuration = configuration;
-    
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -48,8 +48,14 @@ namespace tohdotnetcore
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddApplicationInsightsTelemetry();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.ConfigureTelemetryModule<Microsoft.ApplicationInsights.AspNetCore.RequestTrackingTelemetryModule>((req, o) =>
+            //{
+            //    req.CollectionOptions.TrackExceptions = false;
+            //});
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             // Configure SnapshotCollector from application settings
             services.Configure<SnapshotCollectorConfiguration>(Configuration.GetSection(nameof(SnapshotCollectorConfiguration)));
 
@@ -58,8 +64,8 @@ namespace tohdotnetcore
 
             services.AddDbContext<tohdotnetcoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("tohdotnetcoreContext")));
-					
-					  // In production, the Angular files will be served from this directory
+
+            // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
@@ -69,7 +75,7 @@ namespace tohdotnetcore
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-             if (env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

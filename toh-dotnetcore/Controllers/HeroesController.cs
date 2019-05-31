@@ -24,11 +24,11 @@ namespace toh_dotnetcore.Controllers
 
         // GET: api/Heroes
         [HttpGet]
-        public IEnumerable<Hero> GetHero(string name)
+        public List<Hero> GetHero(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                return _context.Hero;
+                return _context.Hero.ToList();
             }
             else
             {
@@ -45,9 +45,7 @@ namespace toh_dotnetcore.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             
-
             var hero = _context.Hero.FirstOrDefault(m => m.Id == id);
             if (hero == null)
             {
