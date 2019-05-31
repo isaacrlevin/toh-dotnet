@@ -33,6 +33,7 @@ stages:
       displayName: 'Publish Artifact'
       inputs:
         PathtoPublish: '$(build.artifactstagingdirectory)'
+        artifactName: 'drop'
 
 - stage: Deploy
   displayName: Deploy to Azure
