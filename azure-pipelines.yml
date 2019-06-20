@@ -1,0 +1,58 @@
+trigger:
+- master
+
+variables:
+  BuildConfiguration: 'Release'
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  displayName: Build Application using .NET CLI
+  jobs:
+  - job: Build
+    displayName: Build using .NET CLI
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish using .NET CLI
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '**/*.csproj'
+        arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
+        zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+        PathtoPublish: '$(build.artifactstagingdirectory)'
+        artifactName: 'drop'
+
+- stage: Deploy
+  displayName: Deploy to Azure
+  jobs:
+  - job: DeployProd
+    displayName: Deploy to Prod
+    pool:
+      vmImage: $(vmImage)
+    steps:
+    - task: DownloadBuildArtifacts@0
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'drop'
+        downloadPath: '$(build.artifactstagingdirectory)'
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Personal Azure'
+        appType: 'webApp'
+        WebAppName: 'toh-dotnetcore'
+        packageForLinux: '$(build.artifactstagingdirectory)/drop/toh-dotnetcore.zip'
