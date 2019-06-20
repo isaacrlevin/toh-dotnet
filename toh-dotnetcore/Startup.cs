@@ -9,13 +9,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using tohdotnetcore.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.ApplicationInsights.AspNetCore;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.ApplicationInsights.SnapshotCollector;
+using tohdotnetcore.domain.Models;
+using tohdotnetcore.domain;
 
 namespace tohdotnetcore
 {
@@ -70,6 +71,7 @@ namespace tohdotnetcore
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            services.AddTransient<IHeroService, HeroService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using tohdotnetcore;
-using tohdotnetcore.Models;
+using tohdotnetcore.domain;
+using tohdotnetcore.domain.Models;
+
 
 namespace toh_dotnetcore.Controllers
 {
@@ -15,11 +17,11 @@ namespace toh_dotnetcore.Controllers
     [Route("api/Heroes")]
     public class HeroesController : Controller
     {
-        private readonly tohdotnetcoreContext _context;
+        private readonly IHeroService _service;
 
-        public HeroesController(tohdotnetcoreContext context)
+        public HeroesController(tohdotnetcoreContext context, IHeroService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: api/Heroes
@@ -28,11 +30,11 @@ namespace toh_dotnetcore.Controllers
         {
             if (string.IsNullOrEmpty(name))
             {
-                return _context.Hero.ToList();
+                return _service.GetHeros();
             }
             else
             {
-                var heros = _context.Hero.Where(m => m.Name.Contains(name)).ToList();
+                var heros = _service.SearchHeros(name);
                 return heros;
             }
         }
@@ -45,8 +47,8 @@ namespace toh_dotnetcore.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-            var hero = _context.Hero.FirstOrDefault(m => m.Id == id);
+
+            var hero = _service.GetHero(id);
             if (hero == null)
             {
                 return NotFound();
@@ -69,15 +71,14 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(hero).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await _service.UpdateHero(id, hero);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HeroExists(id))
+                var tempHero = _service.GetHero(id);
+                if (tempHero == null)
                 {
                     return NotFound();
                 }
@@ -99,8 +100,7 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.Hero.Add(hero);
-            await _context.SaveChangesAsync();
+            await _service.CreateHero(hero);
 
             return CreatedAtAction("GetHero", new { id = hero.Id }, hero);
         }
@@ -114,21 +114,15 @@ namespace toh_dotnetcore.Controllers
                 return BadRequest(ModelState);
             }
 
-            var hero = await _context.Hero.SingleOrDefaultAsync(m => m.Id == id);
+            var hero = _service.GetHero(id);
             if (hero == null)
             {
                 return NotFound();
             }
 
-            _context.Hero.Remove(hero);
-            await _context.SaveChangesAsync();
+            await _service.DeleteHero(hero);
 
             return Ok(hero);
-        }
-
-        private bool HeroExists(int id)
-        {
-            return _context.Hero.Any(e => e.Id == id);
         }
     }
 }

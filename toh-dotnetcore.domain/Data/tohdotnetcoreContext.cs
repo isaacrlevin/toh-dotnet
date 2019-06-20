@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using tohdotnetcore;
 
-namespace tohdotnetcore.Models
+namespace tohdotnetcore.domain.Models
 {
     public class tohdotnetcoreContext : DbContext
     {
@@ -14,6 +14,6 @@ namespace tohdotnetcore.Models
         {
         }
 
-        public DbSet<tohdotnetcore.Hero> Hero { get; set; }
+        public DbSet<Hero> Hero { get; set; }
     }
 }
