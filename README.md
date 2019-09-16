@@ -1,5 +1,5 @@
 # toh-dotnetcore
-Angular 5 Tour of Heroes with .NET Core 2.1 BackEnd
+Angular 8 Tour of Heroes with .NET Core 3.0 BackEnd
 
 ## Getting Started
 #### Angular Side
