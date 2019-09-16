@@ -18,23 +18,10 @@ using Microsoft.ApplicationInsights.SnapshotCollector;
 using tohdotnetcore.domain.Models;
 using tohdotnetcore.domain;
 
-namespace tohdotnetcore
+namespace toh_dotnetcore.AngularApi
 {
     public class Startup
     {
-        private class SnapshotCollectorTelemetryProcessorFactory : ITelemetryProcessorFactory
-        {
-            private readonly IServiceProvider _serviceProvider;
-
-            public SnapshotCollectorTelemetryProcessorFactory(IServiceProvider serviceProvider) =>
-                _serviceProvider = serviceProvider;
-
-            public ITelemetryProcessor Create(ITelemetryProcessor next)
-            {
-                var snapshotConfigurationOptions = _serviceProvider.GetService<IOptions<SnapshotCollectorConfiguration>>();
-                return new SnapshotCollectorTelemetryProcessor(next, configuration: snapshotConfigurationOptions.Value);
-            }
-        }
         public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
@@ -48,20 +35,12 @@ namespace tohdotnetcore
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddWebEncoders();
             services.AddApplicationInsightsTelemetry();
 
-            //services.ConfigureTelemetryModule<Microsoft.ApplicationInsights.AspNetCore.RequestTrackingTelemetryModule>((req, o) =>
-            //{
-            //    req.CollectionOptions.TrackExceptions = false;
-            //});
+            services.AddMvc();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            // Configure SnapshotCollector from application settings
-            services.Configure<SnapshotCollectorConfiguration>(Configuration.GetSection(nameof(SnapshotCollectorConfiguration)));
-
-            // Add SnapshotCollector telemetry processor.
-            services.AddSingleton<ITelemetryProcessorFactory>(sp => new SnapshotCollectorTelemetryProcessorFactory(sp));
+            services.AddSnapshotCollector();
 
             services.AddDbContext<tohdotnetcoreContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("tohdotnetcoreContext")));
@@ -75,9 +54,9 @@ namespace tohdotnetcore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
             }
@@ -89,14 +68,20 @@ namespace tohdotnetcore
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
 
-            app.UseMvc(routes =>
+            app.UseStaticFiles();
+            if (env.EnvironmentName != "Development")
             {
-                routes.MapRoute(
+                app.UseSpaStaticFiles();
+            }
+
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
@@ -106,7 +91,7 @@ namespace tohdotnetcore
 
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if (env.EnvironmentName == "Development")
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }

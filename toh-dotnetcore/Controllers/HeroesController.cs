@@ -11,7 +11,7 @@ using tohdotnetcore.domain;
 using tohdotnetcore.domain.Models;
 
 
-namespace toh_dotnetcore.Controllers
+namespace toh_dotnetcore.AngularApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/Heroes")]
@@ -26,51 +26,30 @@ namespace toh_dotnetcore.Controllers
 
         // GET: api/Heroes
         [HttpGet]
-        public List<Hero> GetHero(string name)
+        public async Task<List<Hero>> GetHero(string name)
         {
             if (string.IsNullOrEmpty(name))
             {
-                return _service.GetHeros();
+                return await _service.GetHeros();
             }
             else
             {
-                var heros = _service.SearchHeros(name);
-                return heros;
+                return await _service.SearchHeros(name);
             }
         }
 
         // GET: api/Heroes/5
         [HttpGet("{id}")]
-        public IActionResult GetHero([FromRoute] int id)
+        public Task<Hero> GetHero([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var hero = _service.GetHero(id);
-            if (hero == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(hero);
+            return hero;
         }
 
         // PUT: api/Heroes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHero([FromRoute] int id, [FromBody] Hero hero)
+        public async Task PutHero([FromRoute] int id, [FromBody] Hero hero)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != hero.Id)
-            {
-                return BadRequest();
-            }
-
             try
             {
                 await _service.UpdateHero(id, hero);
@@ -78,51 +57,29 @@ namespace toh_dotnetcore.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 var tempHero = _service.GetHero(id);
-                if (tempHero == null)
-                {
-                    return NotFound();
-                }
-                else
+                if (tempHero != null)
                 {
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Heroes
         [HttpPost]
-        public async Task<IActionResult> PostHero([FromBody] Hero hero)
+        public async Task<Hero> PostHero([FromBody] Hero hero)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            await _service.CreateHero(hero);
-
-            return CreatedAtAction("GetHero", new { id = hero.Id }, hero);
+            return await _service.CreateHero(hero);
         }
 
         // DELETE: api/Heroes/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteHero([FromRoute] int id)
+        public async Task DeleteHero([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var hero = _service.GetHero(id);
-            if (hero == null)
+            if (hero != null)
             {
-                return NotFound();
+                await _service.DeleteHero(hero.Result);
             }
-
-            await _service.DeleteHero(hero);
-
-            return Ok(hero);
         }
     }
 }

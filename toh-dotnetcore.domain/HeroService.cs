@@ -10,11 +10,11 @@ namespace tohdotnetcore.domain
 {
     public interface IHeroService
     {
-        List<Hero> GetHeros();
-        Hero GetHero(int id);
-        List<Hero> SearchHeros(string name);
+        Task<List<Hero>> GetHeros();
+        Task<Hero> GetHero(int id);
+        Task<List<Hero>> SearchHeros(string name);
 
-        Task CreateHero(Hero hero);
+        Task<Hero> CreateHero(Hero hero);
 
         Task DeleteHero(Hero hero);
 
@@ -28,10 +28,12 @@ namespace tohdotnetcore.domain
         {
             context = _context;
         }
-        public async Task CreateHero(Hero hero)
+        public async Task<Hero> CreateHero(Hero hero)
         {
             context.Hero.Add(hero);
-            await context.SaveChangesAsync();
+            //await context.SaveChangesAsync();
+            context.SaveChanges();
+            return hero;
         }
 
         public async Task DeleteHero(Hero hero)
@@ -40,19 +42,19 @@ namespace tohdotnetcore.domain
             await context.SaveChangesAsync();
         }
 
-        public Hero GetHero(int id)
+        public async Task<Hero> GetHero(int id)
         {
-           return context.Hero.FirstOrDefault(m => m.Id == id);
+            return await context.Hero.FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public List<Hero> GetHeros()
+        public async Task<List<Hero>> GetHeros()
         {
-            return context.Hero.ToList();
+            return await context.Hero.ToListAsync();
         }
 
-        public List<Hero> SearchHeros(string name)
+        public async Task<List<Hero>> SearchHeros(string name)
         {
-            var heros = context.Hero.Where(m => m.Name.Contains(name)).ToList();
+            var heros = await context.Hero.Where(m => m.Name.Contains(name)).ToListAsync();
             var willThrow = heros[3];
             return heros;
         }
