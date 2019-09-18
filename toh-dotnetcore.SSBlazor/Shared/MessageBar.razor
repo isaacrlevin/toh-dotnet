@@ -1,0 +1,10 @@
+﻿<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code
+{
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    public List<string> Messages { get; private set; } = new List<string>();
+}

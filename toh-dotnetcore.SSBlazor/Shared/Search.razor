@@ -1,0 +1,55 @@
+﻿@using tohdotnetcore.domain
+@inject IHeroService HeroService
+
+<div id="search-component" style="margin-top:300px">
+    <h4>Hero Search</h4>
+
+    <input @oninput="OnSearchChanged"
+           value="@SearchText" />
+    <ul class="search-result">
+        @foreach (var hero in heros)
+        {
+            <li>
+                <a href="/detail/@hero.Id">
+                    @hero.Name
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+
+@code
+{
+    [CascadingParameter] MessageBar MessageState { get; set; }
+
+    List<Hero> heros;
+
+    [Parameter]
+    public string SearchText { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SearchChanged { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        heros = new List<Hero>();
+    }
+
+    private async Task OnSearchChanged(ChangeEventArgs e)
+    {
+        try
+        {
+            System.Threading.Thread.Sleep(300);
+            if (e.Value.ToString() != SearchText)
+            {
+                SearchText = e.Value.ToString();
+                heros = await HeroService.SearchHeros(SearchText);
+            }
+        }
+        catch
+        {
+            MessageState.Messages.Add("Exception");
+        }
+        //return await SearchChanged.InvokeAsync(SearchText);
+    }
+}

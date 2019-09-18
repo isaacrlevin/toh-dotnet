@@ -1,0 +1,67 @@
+﻿@page "/detail/{id}"
+@using tohdotnetcore.domain
+@inject IHeroService HeroService
+
+@if (hero != null)
+{
+    <div>
+        <h2>@hero.Name Details</h2>
+        <div><span>id: </span>@hero.Id</div>
+        <div>
+            <label>
+                name:
+                <input @bind="hero.Name" placeholder="name" />
+            </label>
+        </div>
+        <br />
+        <button onclick="javascript:history.go(-1)">go back</button>
+        <button @onclick="UpdateHero">save</button>
+    </div>
+}
+
+@if (MessageState.Messages.Count > -1)
+{
+<div>
+    <h2>Messages</h2>
+    <button class="clear" @onclick="ClearMessages">
+        clear
+    </button>
+    <br /><br />
+    @foreach (var message in MessageState.Messages)
+    {
+        <div>
+            @message
+        </div>
+    }
+</div>
+}
+
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+
+    [CascadingParameter] MessageBar MessageState { get; set; }
+
+    Hero hero;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(Id, out int id))
+        {
+            hero = await HeroService.GetHero(id);
+            MessageState.Messages.Add($"Hero Service: fetched hero {hero.Name}");
+        }
+    }
+
+    async Task UpdateHero()
+    {
+        await HeroService.UpdateHero(hero.Id, hero);
+        MessageState.Messages.Add($"Hero Service: updated hero {hero.Name}");
+    }
+
+    void ClearMessages()
+    {
+        MessageState.Messages.Clear();
+    }
+}

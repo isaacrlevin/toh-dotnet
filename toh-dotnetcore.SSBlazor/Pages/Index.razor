@@ -1,0 +1,89 @@
+﻿@page "/"
+@page "/dashboard"
+
+@using tohdotnetcore.domain
+@inject IHeroService HeroService
+
+<h3>Top Heroes</h3>
+@if (heros == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="grid grid-pad">
+        @foreach (var hero in heros)
+        {
+            <a href="/detail/@hero.Id" class="col-1-4">
+                <div class="module hero">
+                    <h4>@hero.Name</h4>
+                </div>
+            </a>
+        }
+    </div>
+}
+<br />
+
+<div style="margin-top:300px; width: 200px">
+    <BlazoredTypeahead SearchMethod="@SearchHeros"
+                       @bind-Value="@SelectedHero"
+                       Placeholder="Search by name...">
+        <SelectedTemplate Context="hero">
+            @hero.Name
+        </SelectedTemplate>
+        <ResultTemplate Context="hero">
+            @hero.Name
+        </ResultTemplate>
+    </BlazoredTypeahead>
+</div>
+
+@if (MessageState.Messages.Count > -1)
+{
+    <div>
+        <h2>Messages</h2>
+        <button class="clear" @onclick="ClearMessages">
+            clear
+        </button>
+        <br /><br />
+        @foreach (var message in MessageState.Messages)
+        {
+            <div>
+                @message
+            </div>
+        }
+    </div>
+}
+
+
+@code {
+    [CascadingParameter] MessageBar MessageState { get; set; }
+    List<Hero> heros;
+
+    protected override async Task OnInitializedAsync()
+    {
+        heroResults = new List<Hero>();
+        heros = await HeroService.GetHeros();
+        MessageState.Messages.Add("Hero Service: fetched heros");
+    }
+
+    void ClearMessages()
+    {
+        MessageState.Messages.Clear();
+    }
+    private Hero SelectedHero;
+
+    [Parameter] public List<Hero> heroResults { get; set; }
+
+    private async Task<IEnumerable<Hero>> SearchHeros(string searchText)
+    {
+        try
+        {
+            return await HeroService.SearchHeros(searchText);
+        }
+        catch
+        {
+            MessageState.Messages.Add("Hero Service: Exception");
+        }
+            return new List<Hero>();
+    }
+}

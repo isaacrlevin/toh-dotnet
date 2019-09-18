@@ -1,0 +1,84 @@
+﻿@page "/heroes"
+@using tohdotnetcore.domain
+@inject IHeroService HeroService
+
+<h2>My Heroes</h2>
+
+<div>
+    <label>
+        Hero name:
+        <input @bind="@heroName" />
+    </label>
+    <!-- (click) passes input value to add() and then clears the input -->
+    <button @onclick="AddHero">
+        add
+    </button>
+</div>
+
+<ul class="heroes">
+    @foreach (var hero in heros)
+    {
+        <li>
+            <a href="/detail/@hero.Id">
+                <span class="badge">@hero.Id</span> @hero.Name
+            </a>
+            <button class="delete" title="delete hero"
+                    @onclick="@(e => DeleteHero(hero))">
+                x
+            </button>
+        </li>
+    }
+</ul>
+
+@if (MessageState.Messages.Count > -1)
+{
+<div>
+    <h2>Messages</h2>
+    <button class="clear" @onclick="ClearMessages">
+        clear
+    </button>
+    <br /><br />
+    @foreach (var message in MessageState.Messages)
+    {
+        <div>
+            @message
+        </div>
+    }
+</div>
+}
+
+
+@code {
+    List<Hero> heros;
+
+    [CascadingParameter] MessageBar MessageState { get; set; }
+
+    [Parameter]
+    public string heroName { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        heros = new List<Hero>();
+        heros = await HeroService.GetHeros();
+    }
+
+    void AddHero()
+    {
+        var hero = HeroService.CreateHero(new Hero { Name = heroName }).Result;
+        heros.Add(hero);
+        heroName = string.Empty;
+        MessageState.Messages.Add($"Hero Service: added hero {hero.Name}");
+    }
+
+    async Task DeleteHero(Hero hero)
+    {
+        await HeroService.DeleteHero(hero);
+        heros.Remove(hero);
+        MessageState.Messages.Add($"Hero Service: deleted hero {hero.Name}");
+    }
+
+    void ClearMessages()
+    {
+        MessageState.Messages.Clear();
+    }
+}
