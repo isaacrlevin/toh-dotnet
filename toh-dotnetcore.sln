@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28917.182
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toh-dotnetcore", "toh-dotnetcore\toh-dotnetcore.csproj", "{FE125634-59F5-4381-BEA8-2604DFB40932}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toh-dotnetcore.domain", "toh-dotnetcore.domain\toh-dotnetcore.domain.csproj", "{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toh-dotnetcore.domain", "toh-dotnetcore.domain\toh-dotnetcore.domain.csproj", "{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

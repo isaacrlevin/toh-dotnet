@@ -22,7 +22,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 
-ClientApp/dist
+*/ClientApp/dist
 
 # Visual Studio 2015 cache/options directory
 .vs/
