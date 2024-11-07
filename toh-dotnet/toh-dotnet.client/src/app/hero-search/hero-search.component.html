@@ -1,0 +1,11 @@
+<div id="search-component">
+    <label for="search-box">Hero Search</label>
+    <input [formControl]="searchControl" placeholder="Search...">
+    <ul *ngIf="heroes.length" class="search-result">
+        <li *ngFor="let hero of heroes">
+            <a routerLink="/detail/{{hero.id}}">
+                {{ hero.name }}
+            </a>
+        </li>
+    </ul>
+</div>

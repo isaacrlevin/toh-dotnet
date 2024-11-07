@@ -263,3 +263,4 @@ __pycache__/
 *.pyc
 *.pubxml
 toh-dotnet/appsettings.Development.json
+/toh-dotnet/toh-dotnet.Server/appsettings.Development.json

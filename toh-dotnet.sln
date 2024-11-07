@@ -5,7 +5,9 @@ VisualStudioVersion = 17.0.31825.309
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "toh-dotnet.domain", "toh-dotnet.domain\toh-dotnet.domain.csproj", "{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toh-dotnet", "toh-dotnet\toh-dotnet.csproj", "{53229016-7910-42AA-9210-2D95B8C8F4EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "toh-dotnet.Server", "toh-dotnet\toh-dotnet.Server\toh-dotnet.Server.csproj", "{396D2E48-34DF-4729-B9F7-B36AC53927D4}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "toh-dotnet.client", "toh-dotnet\toh-dotnet.client\toh-dotnet.client.esproj", "{5B48A7CB-9052-403C-AE20-93909EEECCCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,16 @@ Global
 		{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A2E6830-5E10-47C6-8118-8C0A4056E9C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{53229016-7910-42AA-9210-2D95B8C8F4EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53229016-7910-42AA-9210-2D95B8C8F4EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53229016-7910-42AA-9210-2D95B8C8F4EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53229016-7910-42AA-9210-2D95B8C8F4EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{396D2E48-34DF-4729-B9F7-B36AC53927D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{396D2E48-34DF-4729-B9F7-B36AC53927D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{396D2E48-34DF-4729-B9F7-B36AC53927D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{396D2E48-34DF-4729-B9F7-B36AC53927D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B48A7CB-9052-403C-AE20-93909EEECCCA}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

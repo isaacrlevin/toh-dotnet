@@ -30,31 +30,30 @@ namespace tohdotnet.domain
         }
         public async Task<Hero> CreateHero(Hero hero)
         {
-            context.Hero.Add(hero);
-            //await context.SaveChangesAsync();
-            context.SaveChanges();
+            context.Heroes.Add(hero);
+            await context.SaveChangesAsync();
             return hero;
         }
 
         public async Task DeleteHero(Hero hero)
         {
-            context.Hero.Remove(hero);
+            context.Heroes.Remove(hero);
             await context.SaveChangesAsync();
         }
 
         public async Task<Hero> GetHero(int id)
         {
-            return await context.Hero.FirstOrDefaultAsync(m => m.Id == id);
+            return await context.Heroes.FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task<List<Hero>> GetHeros()
         {
-            return await context.Hero.ToListAsync();
+            return await context.Heroes.ToListAsync();
         }
 
         public async Task<List<Hero>> SearchHeros(string name)
         {
-            var heros = await context.Hero.Where(m => m.Name.Contains(name)).ToListAsync();
+            var heros = await context.Heroes.Where(m => m.Name.Contains(name)).ToListAsync();
             var willThrow = heros[3];
             return heros;
         }

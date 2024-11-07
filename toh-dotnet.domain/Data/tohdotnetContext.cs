@@ -14,6 +14,6 @@ namespace tohdotnet.domain.Models
         {
         }
 
-        public DbSet<Hero> Hero { get; set; }
+        public DbSet<Hero> Heroes { get; set; }
     }
 }
